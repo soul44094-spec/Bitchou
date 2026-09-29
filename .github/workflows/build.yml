@@ -4,6 +4,10 @@ on:
 
 push:
 
+branches:
+
+main
+
 workflow_dispatch:
 
 jobs:
@@ -14,29 +18,40 @@ runs-on: ubuntu-latest
 
 steps:
 
+name: Checkout
+
 uses: actions/checkout@v4
 
-actions/setup-java@v4
+Set up Java
 
-distribution: temurin java-version: '17'
+uses: actions/setup-java@v4
+
+with:
+
+distribution: temurin java-version: '17
+
+up Flutter
 
 uses: subosito/flutter-action@v2
 
-with
+stable
 
-channel: stable
+ame: Create Flutter Android project un: flutter create --platforms=android --org com.test fondblanc
 
-run: flutter create --platforms=android --org com.test fondblanc
+ame: Use app code
 
-un: cp main.dart fondblanc/lib/main.dart
+run: cp main.dart fondblanc/lib/main.dart
 
-run: flutter build apk --release working-directory: fondblanc
+name: Build APK
+
+working-directory: fondblanc
+
+run: flutter build apk --release
+
+name: Upload APK
 
 uses: actions/upload-artifact@v4
-
-with:
 
 name: app-apk
 
 path: fondblanc/build/app/outputs/flutter-apk/app-release.apk
-
